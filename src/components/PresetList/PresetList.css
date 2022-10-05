@@ -1,0 +1,47 @@
+.PresetList {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 4px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.PresetList-item {
+  margin: 4px;
+  border: 2px solid #eee;
+  border-radius: 4px;
+}
+
+.PresetList-item.is-active {
+  border-color: #0064ff;
+}
+
+.PresetList-itemButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: monospace;
+  width: 90px;
+  height: 100%;
+  appearance: none;
+  border: none;
+  padding: 0;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.PresetList-itemPreview {
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.PresetList-itemName {
+  width: 100%;
+  flex-grow: 1;
+  background: #fff;
+  font-size: 12px;
+}

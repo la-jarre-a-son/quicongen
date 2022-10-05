@@ -1,0 +1,48 @@
+.GeneralForm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 4px;
+}
+
+.GeneralForm-field {
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.GeneralForm-fieldLabel {
+  text-align: center;
+  padding: 8px;
+  background-color: #111;
+}
+
+/* GeneralForm Slider */
+
+.GeneralForm-slider {
+  height: 48px;
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  flex-grow: 1;
+}
+
+.GeneralForm-sliderInput {
+  color: #0064ff;
+  width: 100%;
+}
+
+.GeneralForm-type,
+.GeneralForm-color,
+.GeneralForm-linear,
+.GeneralForm-radial {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

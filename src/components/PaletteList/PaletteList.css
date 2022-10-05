@@ -1,0 +1,31 @@
+.PaletteList {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 4px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.PaletteList-item {
+  margin: 4px;
+  border: 2px solid #eee;
+  border-radius: 4px;
+}
+
+.PaletteList-item.is-active {
+  border-color: #0064ff;
+}
+
+.PaletteList-itemButton {
+  font-family: monospace;
+  width: 58px;
+  height: 58px;
+  appearance: none;
+  border: none;
+  padding: 0;
+  vertical-align: top;
+  cursor: pointer;
+  background: transparent;
+}

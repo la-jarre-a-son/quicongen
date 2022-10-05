@@ -1,0 +1,35 @@
+.Preview {
+  grid-area: preview;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Preview-frame {
+  max-width: 512px;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 0 16px 0 black;
+}
+
+.Preview-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+
+.Preview-image {
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.Preview-download {
+  flex-grow: 0;
+  margin-top: 8px;
+}

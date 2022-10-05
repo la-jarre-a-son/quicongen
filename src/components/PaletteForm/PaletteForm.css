@@ -1,0 +1,137 @@
+.PaletteForm {
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 4px;
+}
+
+.PaletteForm-header {
+  text-align: center;
+  padding: 8px;
+  background-color: #111;
+}
+
+.PaletteForm-content {
+  padding: 4px;
+}
+
+.PaletteForm-item {
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  color: transparent;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: #777;
+}
+
+.PaletteForm-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.PaletteForm-button {
+  flex-grow: 1;
+}
+
+.PaletteForm-item {
+  opacity: 0.5;
+}
+
+.PaletteForm-item:hover {
+  opacity: 1;
+}
+
+.PaletteForm-item.is-active {
+  background-color: #0064ff;
+  opacity: 1;
+}
+
+/* PaletteForm Item: Type */
+
+.PaletteForm-item--type {
+  width: 64px;
+  height: 64px;
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeColor {
+  background-color: #777;
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeColor:hover,
+.PaletteForm-item--type.PaletteForm-item--typeColor:focus,
+.PaletteForm-item--type.PaletteForm-item--typeColor.is-active {
+  background-color: #0064ff;
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeLinear {
+  background: linear-gradient(0deg, #fff 0%, #444 100%);
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeLinear:hover,
+.PaletteForm-item--type.PaletteForm-item--typeLinear:focus,
+.PaletteForm-item--type.PaletteForm-item--typeLinear.is-active {
+  background: linear-gradient(0deg, #fff 0%, #0064ff 100%);
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeRadial {
+  background: radial-gradient(#fff 0%, #444 100%);
+}
+
+.PaletteForm-item--type.PaletteForm-item--typeRadial:hover,
+.PaletteForm-item--type.PaletteForm-item--typeRadial:focus,
+.PaletteForm-item--type.PaletteForm-item--typeRadial.is-active {
+  background: radial-gradient(#fff 0%, #0064ff 100%);
+}
+
+/* PaletteForm Picker */
+
+.PaletteForm-picker {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 4px;
+  color: transparent;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+/* PaletteForm Slider */
+
+.PaletteForm-slider {
+  height: 64px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #777;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  flex-grow: 1;
+  margin: 4px;
+}
+
+.PaletteForm-sliderInput {
+  color: #0064ff;
+  width: 100%;
+}
+
+.PaletteForm-type,
+.PaletteForm-color,
+.PaletteForm-linear,
+.PaletteForm-radial {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
