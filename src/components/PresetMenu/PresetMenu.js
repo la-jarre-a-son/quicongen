@@ -7,12 +7,21 @@ import { Menu, MenuSection } from '../Menu';
 import FilePicker from '../FilePicker';
 import PresetList from '../PresetList/PresetList';
 import Button from '../Button';
+import { usePreset } from '../../contexts/PresetContext';
 
 function PresetMenu({ className }) {
   const { icon, setIcon } = useIcon();
   const { presets, currentPreset, setCurrentPreset, removePreset } = usePresetList();
+  const { unsaved } = usePreset();
 
   const handleSelect = (preset) => {
+    if (unsaved) {
+      // eslint-disable-next-line no-restricted-globals, no-alert
+      const shouldDiscardChanges = confirm(
+        'You have unsaved changes to the current preset.\nDo you want to discard changes ?'
+      );
+      if (!shouldDiscardChanges) return;
+    }
     setCurrentPreset(preset.name);
   };
 

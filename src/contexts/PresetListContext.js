@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useMemo, useCallback } from 're
 
 import DEFAULT_PRESET_LIST from '../defaults/presetList.json';
 
-const getPresetList = () => {
+const readPresetList = () => {
   try {
     return JSON.parse(window.localStorage.getItem('presets')) || DEFAULT_PRESET_LIST;
   } catch (err) {
@@ -10,7 +10,7 @@ const getPresetList = () => {
   }
 };
 
-const savePresetList = (presets) => {
+const writePresetList = (presets) => {
   window.localStorage.setItem('presets', JSON.stringify(presets));
 };
 
@@ -33,7 +33,7 @@ const deletePreset = (presetName) => {
 const PresetListContext = React.createContext();
 
 function PresetListProvider({ children }) {
-  const [presets, setPresets] = useState(getPresetList());
+  const [presets, setPresets] = useState(readPresetList());
   const [currentPreset, setCurrentPreset] = useState(getCurrentPreset());
 
   const removePreset = useCallback((name) => {
@@ -41,11 +41,7 @@ function PresetListProvider({ children }) {
     deletePreset(name);
   }, []);
 
-  const addPreset = useCallback((name, preview) => {
-    setPresets((state) => [...state, { name, preview }]);
-  }, []);
-
-  const updatePreset = useCallback(
+  const savePreset = useCallback(
     (name, preview) => {
       setPresets((state) =>
         state.find((preset) => preset.name === name)
@@ -57,7 +53,7 @@ function PresetListProvider({ children }) {
   );
 
   useEffect(() => {
-    savePresetList(presets);
+    writePresetList(presets);
   }, [presets]);
 
   useEffect(() => {
@@ -70,10 +66,9 @@ function PresetListProvider({ children }) {
       setCurrentPreset,
       presets,
       removePreset,
-      addPreset,
-      updatePreset,
+      savePreset,
     }),
-    [currentPreset, presets, removePreset, addPreset]
+    [currentPreset, presets, removePreset, savePreset]
   );
 
   return <PresetListContext.Provider value={value}>{children}</PresetListContext.Provider>;

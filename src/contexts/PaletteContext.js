@@ -33,7 +33,7 @@ export const canRemoveItem = (items, value) => {
   return !canAddItem(items, value);
 };
 
-const getPalette = () => {
+const readPalette = () => {
   try {
     return JSON.parse(window.localStorage.getItem('palettes')) || DEFAULT_PALETTE;
   } catch (err) {
@@ -41,14 +41,14 @@ const getPalette = () => {
   }
 };
 
-const savePalette = (palette) => {
+const writePalette = (palette) => {
   window.localStorage.setItem('palettes', JSON.stringify(palette));
 };
 
 const PaletteContext = React.createContext();
 
 function PaletteProvider({ children }) {
-  const [items, setItems] = useState(getPalette());
+  const [items, setItems] = useState(readPalette());
 
   const removeItem = useCallback((id) => {
     setItems((state) => state.filter((item) => item.id !== id));
@@ -64,7 +64,7 @@ function PaletteProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    savePalette(items);
+    writePalette(items);
   }, [items]);
 
   const value = useMemo(

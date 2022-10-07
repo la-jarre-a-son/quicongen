@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { usePreset } from '../../contexts/PresetContext';
 import { usePalette, canAddItem, canRemoveItem } from '../../contexts/PaletteContext';
@@ -14,18 +14,14 @@ import GeneralForm from '../GeneralForm';
 function ConfigMenu({ className }) {
   const { dataUrl } = useRendering();
   const { items, removeItem, addItem } = usePalette();
-  const { preset, setBackground, setBackgroundImage, setForeground, save, add } = usePreset();
+  const { unsaved, currentPreset, preset, setBackground, setBackgroundImage, setForeground, save } = usePreset();
   const { background, backgroundImage, foreground } = preset;
 
   const handleSavePreset = () => {
-    save(dataUrl);
-  };
-
-  const handleAddPreset = () => {
-    const name = prompt('Preset Name ?'); // eslint-disable-line
+    const name = prompt('Preset Name ?', currentPreset); // eslint-disable-line
 
     if (name) {
-      add(name, dataUrl);
+      save(name, dataUrl);
     }
   };
 
@@ -34,16 +30,14 @@ function ConfigMenu({ className }) {
       className={className}
       title="Settings"
       footer={
-        <Fragment>
-          <Button className="ConfigMenu-button" intent="success" onClick={handleSavePreset}>
-            Save Preset
-          </Button>
-          <Button className="ConfigMenu-button" onClick={handleAddPreset}>
-            Add Preset
-          </Button>
-        </Fragment>
+        <Button className="ConfigMenu-button" intent="success" onClick={handleSavePreset} disabled={!unsaved}>
+          Save Preset
+        </Button>
       }
     >
+      <Button className="ConfigMenu-button" intent="success" onClick={handleSavePreset} disabled={!unsaved}>
+        Save Preset
+      </Button>
       <MenuSection title="General">
         <GeneralForm />
       </MenuSection>

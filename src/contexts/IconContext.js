@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
 
-const getIcon = () => {
+const readIcon = () => {
   try {
     return JSON.parse(window.localStorage.getItem(`icon`));
   } catch (err) {
@@ -8,17 +8,17 @@ const getIcon = () => {
   }
 };
 
-const saveIcon = (icon) => {
+const writeIcon = (icon) => {
   window.localStorage.setItem(`icon`, JSON.stringify(icon));
 };
 
 const IconContext = React.createContext();
 
 function IconProvider({ children }) {
-  const [icon, _setIcon] = useState(getIcon());
+  const [icon, _setIcon] = useState(readIcon());
 
   useEffect(() => {
-    saveIcon(icon);
+    writeIcon(icon);
   }, [icon]);
 
   const setIcon = useCallback((name, data) => {

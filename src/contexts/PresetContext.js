@@ -3,7 +3,7 @@ import { usePresetList } from './PresetListContext';
 
 import DEFAULT_PRESET from '../defaults/preset.json';
 
-const getPreset = (presetName) => {
+const readPreset = (presetName) => {
   try {
     return { ...DEFAULT_PRESET, ...JSON.parse(window.localStorage.getItem(`preset-${presetName}`)) };
   } catch (err) {
@@ -11,75 +11,77 @@ const getPreset = (presetName) => {
   }
 };
 
-const savePreset = (presetName, preset) => {
+const writePreset = (presetName, preset) => {
   window.localStorage.setItem(`preset-${presetName}`, JSON.stringify(preset));
 };
 
 const PresetContext = React.createContext();
 
 function PresetProvider({ children }) {
-  const { currentPreset, updatePreset, addPreset, setCurrentPreset } = usePresetList();
-  const [preset, setPreset] = useState(getPreset(currentPreset));
+  const { currentPreset, savePreset, setCurrentPreset } = usePresetList();
+  const [preset, setPreset] = useState(readPreset(currentPreset));
+  const [unsaved, setUnsaved] = useState(false);
+
+  const updatePreset = useCallback((p) => {
+    setPreset(p);
+    setUnsaved(true);
+  }, []);
 
   const setBackground = useCallback((background) => {
-    setPreset((state) => ({ ...state, background }));
+    updatePreset((state) => ({ ...state, background }));
   }, []);
 
   const setBackgroundImage = useCallback((name, data) => {
     if (name === null) {
-      setPreset((state) => ({ ...state, backgroundImage: null }));
+      updatePreset((state) => ({ ...state, backgroundImage: null }));
     } else {
-      setPreset((state) => ({ ...state, backgroundImage: { name, data } }));
+      updatePreset((state) => ({ ...state, backgroundImage: { name, data } }));
     }
   }, []);
 
   const setForeground = useCallback((foreground) => {
-    setPreset((state) => ({ ...state, foreground }));
+    updatePreset((state) => ({ ...state, foreground }));
   }, []);
 
   const setSize = useCallback((size) => {
-    setPreset((state) => ({ ...state, size: Math.max(0, Math.min(1024, size)) }));
+    updatePreset((state) => ({ ...state, size: Math.max(0, Math.min(1024, size)) }));
   }, []);
 
   const setPadding = useCallback((padding) => {
-    setPreset((state) => ({ ...state, padding }));
+    updatePreset((state) => ({ ...state, padding }));
   }, []);
 
   const setRotation = useCallback((rotation) => {
-    setPreset((state) => ({ ...state, rotation }));
+    updatePreset((state) => ({ ...state, rotation }));
   }, []);
 
   const setRadiusType = useCallback((radiusType) => {
-    setPreset((state) => ({ ...state, radiusType }));
+    updatePreset((state) => ({ ...state, radiusType }));
   }, []);
 
   const setRadius = useCallback((radius) => {
-    setPreset((state) => ({ ...state, radius }));
+    updatePreset((state) => ({ ...state, radius }));
   }, []);
 
   const save = useCallback(
-    (preview) => {
-      updatePreset(currentPreset, preview);
-      savePreset(currentPreset, preset);
+    (name, preview) => {
+      savePreset(name, preview);
+      writePreset(name, preset);
+      setCurrentPreset(name);
+      setUnsaved(false);
     },
     [currentPreset, preset]
   );
 
-  const add = useCallback(
-    (name, preview) => {
-      savePreset(name, preset);
-      addPreset(name, preview);
-      setCurrentPreset(name);
-    },
-    [preset]
-  );
-
   useEffect(() => {
-    setPreset(getPreset(currentPreset));
+    setPreset(readPreset(currentPreset));
+    setUnsaved(false);
   }, [currentPreset]);
 
   const value = useMemo(
     () => ({
+      currentPreset,
+      unsaved,
       preset,
       setBackground,
       setBackgroundImage,
@@ -90,9 +92,8 @@ function PresetProvider({ children }) {
       setRadiusType,
       setRadius,
       save,
-      add,
     }),
-    [preset, setBackground]
+    [currentPreset, unsaved, preset, setBackground]
   );
 
   return <PresetContext.Provider value={value}>{children}</PresetContext.Provider>;
