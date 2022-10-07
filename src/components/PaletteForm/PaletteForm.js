@@ -73,7 +73,7 @@ function PaletteForm({ onChange, onAdd, onRemove, value = {}, canAdd, canRemove 
 
   return (
     <div className="PaletteForm">
-      <div className="PaletteForm-header">Customize</div>
+      <div className="PaletteForm-header">Overlay</div>
       <div className="PaletteForm-content">
         <PaletteFormType value={value.type} onChange={handleTypeChange} />
         {value.type === 'color' && <PaletteFormColor value={value} onChange={handleChange} />}

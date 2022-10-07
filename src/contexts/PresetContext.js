@@ -31,6 +31,10 @@ function PresetProvider({ children }) {
     updatePreset((state) => ({ ...state, background }));
   }, []);
 
+  const setBackgroundOpacity = useCallback((backgroundOpacity) => {
+    updatePreset((state) => ({ ...state, backgroundOpacity }));
+  }, []);
+
   const setBackgroundImage = useCallback((name, data) => {
     if (name === null) {
       updatePreset((state) => ({ ...state, backgroundImage: null }));
@@ -41,6 +45,10 @@ function PresetProvider({ children }) {
 
   const setForeground = useCallback((foreground) => {
     updatePreset((state) => ({ ...state, foreground }));
+  }, []);
+
+  const setForegroundOpacity = useCallback((foregroundOpacity) => {
+    updatePreset((state) => ({ ...state, foregroundOpacity }));
   }, []);
 
   const setSize = useCallback((size) => {
@@ -89,7 +97,9 @@ function PresetProvider({ children }) {
       preset,
       setBackground,
       setBackgroundImage,
+      setBackgroundOpacity,
       setForeground,
+      setForegroundOpacity,
       setSize,
       setPadding,
       setRotation,
@@ -98,7 +108,7 @@ function PresetProvider({ children }) {
       setShadow,
       save,
     }),
-    [currentPreset, unsaved, preset, setBackground]
+    [currentPreset, unsaved, preset]
   );
 
   return <PresetContext.Provider value={value}>{children}</PresetContext.Provider>;

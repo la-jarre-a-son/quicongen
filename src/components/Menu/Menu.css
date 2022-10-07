@@ -67,3 +67,10 @@
 
   background: #555;
 }
+
+.Menu-sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+}

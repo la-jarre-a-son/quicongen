@@ -11,13 +11,24 @@ import Button from '../Button';
 import { useRendering } from '../../contexts/RenderingContext';
 import GeneralForm from '../GeneralForm';
 import ShadowForm from '../ShadowForm';
+import OpacityField from '../OpacityField';
 
 function ConfigMenu({ className }) {
   const { dataUrl } = useRendering();
   const { items, removeItem, addItem } = usePalette();
-  const { unsaved, currentPreset, preset, setBackground, setBackgroundImage, setForeground, setShadow, save } =
-    usePreset();
-  const { background, backgroundImage, foreground, shadow } = preset;
+  const {
+    unsaved,
+    currentPreset,
+    preset,
+    setBackground,
+    setBackgroundOpacity,
+    setBackgroundImage,
+    setForeground,
+    setForegroundOpacity,
+    setShadow,
+    save,
+  } = usePreset();
+  const { background, backgroundOpacity, backgroundImage, foreground, foregroundOpacity, shadow } = preset;
 
   const handleSavePreset = () => {
     const name = prompt('Preset Name ?', currentPreset); // eslint-disable-line
@@ -51,6 +62,7 @@ function ConfigMenu({ className }) {
           canAdd={canAddItem(items, background)}
           canRemove={canRemoveItem(items, background)}
         />
+        <OpacityField value={backgroundOpacity} onChange={setBackgroundOpacity} />
       </MenuSection>
 
       <MenuSection title="Background Image">
@@ -67,6 +79,7 @@ function ConfigMenu({ className }) {
           canAdd={canAddItem(items, foreground)}
           canRemove={canRemoveItem(items, foreground)}
         />
+        <OpacityField value={foregroundOpacity} onChange={setForegroundOpacity} />
       </MenuSection>
 
       <MenuSection title="Icon Shadow">

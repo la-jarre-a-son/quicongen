@@ -25,7 +25,19 @@ function RenderingProvider({ children }) {
   const { icon } = useIcon();
   const { currentPreset } = usePresetList();
   const { preset } = usePreset();
-  const { size, padding, rotation, radius, radiusType, background, backgroundImage, foreground, shadow } = preset;
+  const {
+    size,
+    padding,
+    rotation,
+    radius,
+    radiusType,
+    background,
+    backgroundOpacity,
+    backgroundImage,
+    foreground,
+    foregroundOpacity,
+    shadow,
+  } = preset;
   const image = useImage(icon && icon.data);
 
   const bgImage = useImage(backgroundImage && backgroundImage.data);
@@ -33,37 +45,15 @@ function RenderingProvider({ children }) {
   const [dataUrl, setDataUrl] = useState(null);
   const [filename, setFilename] = useState('QuIconGen.png');
 
-  const cBackgroundRef = useRef(null);
-  const cForegroundRef = useRef(null);
+  const canvasRef = useRef(null);
+  const canvasTmpRef = useRef(null);
 
-  const drawBackground = () => {
-    const ctx = cBackgroundRef.current.getContext('2d');
-
+  const drawBackgroundToTmp = () => {
+    const ctx = canvasTmpRef.current.getContext('2d');
     ctx.clearRect(0, 0, size, size);
 
+    ctx.globalAlpha = backgroundOpacity;
     ctx.globalCompositeOperation = 'source-over';
-
-    if (bgImage) {
-      const { x, y, w, h } = getImageDimensionsFill(size / 2, size / 2, bgImage.width, bgImage.height, size, size);
-
-      if (background.type === 'none') {
-        setCanvasFillStyle(ctx, { type: 'color', color: '#000000' }, size);
-        if (radiusType === 'arc') {
-          fillRectRound(ctx, 0, 0, size, size, (size / 2) * radius);
-        }
-        if (radiusType === 'quadratic') {
-          fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
-        }
-
-        ctx.globalCompositeOperation = 'source-in';
-      } else {
-        ctx.globalCompositeOperation = 'copy';
-      }
-
-      ctx.drawImage(bgImage, x, y, w, h);
-
-      ctx.globalCompositeOperation = 'source-in';
-    }
 
     if (background.type !== 'none') {
       setCanvasFillStyle(ctx, background, size);
@@ -74,33 +64,19 @@ function RenderingProvider({ children }) {
         fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
       }
     }
-
-    const [shadowX, shadowY] = polarToCartesian(shadow.angle, shadow.distance * size);
-
-    ctx.shadowOffsetX = shadowX;
-    ctx.shadowOffsetY = shadowY;
-    ctx.shadowColor = colorHexToRGBA(shadow.color, shadow.opacity);
-    ctx.shadowBlur = shadow.blur * size;
-
-    ctx.globalCompositeOperation = 'source-over';
-
-    ctx.save();
-    ctx.translate(size / 2, size / 2);
-    ctx.rotate((rotation / 180) * Math.PI);
-    ctx.translate(-size / 2, -size / 2);
-    ctx.drawImage(cForegroundRef.current, 0, 0, size, size);
-    ctx.restore();
   };
 
-  const drawForeground = () => {
-    const iconSize = size - size * padding;
+  const drawForegroundToTmp = () => {
+    const ctx = canvasTmpRef.current.getContext('2d');
+    ctx.clearRect(0, 0, size, size);
+    ctx.globalAlpha = foregroundOpacity;
 
-    const ctx = cForegroundRef.current.getContext('2d');
+    const iconSize = size - size * padding;
 
     if (image) {
       const { x, y, w, h } = getImageDimensionsFit(size / 2, size / 2, image.width, image.height, iconSize, iconSize);
 
-      ctx.globalCompositeOperation = 'copy';
+      ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(image, x, y, w, h);
 
       if (foreground.type !== 'none') {
@@ -112,22 +88,67 @@ function RenderingProvider({ children }) {
     }
   };
 
+  const draw = () => {
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.clearRect(0, 0, size, size);
+
+    ctx.globalCompositeOperation = 'source-over';
+
+    if (bgImage) {
+      const { x, y, w, h } = getImageDimensionsFill(size / 2, size / 2, bgImage.width, bgImage.height, size, size);
+
+      setCanvasFillStyle(ctx, { type: 'color', color: '#000000' }, size);
+      if (radiusType === 'arc') {
+        fillRectRound(ctx, 0, 0, size, size, (size / 2) * radius);
+      }
+      if (radiusType === 'quadratic') {
+        fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
+      }
+
+      ctx.globalCompositeOperation = 'source-in';
+
+      ctx.drawImage(bgImage, x, y, w, h);
+
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    drawBackgroundToTmp();
+    ctx.drawImage(canvasTmpRef.current, 0, 0, size, size);
+
+    const [shadowX, shadowY] = polarToCartesian(shadow.angle, shadow.distance * size);
+
+    ctx.shadowOffsetX = shadowX;
+    ctx.shadowOffsetY = shadowY;
+    ctx.shadowColor = colorHexToRGBA(shadow.color, shadow.opacity);
+    ctx.shadowBlur = shadow.blur * size;
+
+    ctx.globalCompositeOperation = 'source-over';
+    drawForegroundToTmp();
+
+    ctx.save();
+    ctx.translate(size / 2, size / 2);
+    ctx.rotate((rotation / 180) * Math.PI);
+    ctx.translate(-size / 2, -size / 2);
+
+    ctx.drawImage(canvasTmpRef.current, 0, 0, size, size);
+    ctx.restore();
+  };
+
   useEffect(() => {
-    cForegroundRef.current = document.createElement('canvas');
-    cBackgroundRef.current = document.createElement('canvas');
+    canvasTmpRef.current = document.createElement('canvas');
+    canvasRef.current = document.createElement('canvas');
   }, []);
 
   useEffect(() => {
-    if (cForegroundRef.current && cBackgroundRef.current) {
-      cBackgroundRef.current.width = size;
-      cBackgroundRef.current.height = size;
-      cForegroundRef.current.width = size;
-      cForegroundRef.current.height = size;
+    if (canvasTmpRef.current && canvasRef.current) {
+      canvasRef.current.width = size;
+      canvasRef.current.height = size;
+      canvasTmpRef.current.width = size;
+      canvasTmpRef.current.height = size;
 
-      drawForeground();
-      drawBackground();
+      draw();
 
-      setDataUrl(cBackgroundRef.current.toDataURL());
+      setDataUrl(canvasRef.current.toDataURL());
     }
   }, [preset, image, bgImage]);
 

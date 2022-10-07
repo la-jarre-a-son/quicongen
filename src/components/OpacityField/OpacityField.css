@@ -1,0 +1,35 @@
+.OpacityField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.OpacityField-label {
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background-color: #111;
+}
+
+/* OpacityField Slider */
+
+.OpacityField-slider {
+  width: 100%;
+  height: 48px;
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  flex-grow: 1;
+}
+
+.OpacityField-sliderInput {
+  color: #0064ff;
+  width: 100%;
+}
