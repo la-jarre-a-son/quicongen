@@ -5,7 +5,7 @@
   "description": "A Quick Icon Generator for Web or Stream Deck",
   "scripts": {
     "start": "parcel src/index.html --open",
-    "lint": "eslint --fix src/**/*.js && prettier --write src/**/*.css",
+    "lint": "eslint --fix src/**/*.js && prettier --write src/**/*.{js,css}",
     "clean": "rimraf ./.parcel-cache && rimraf ./docs",
     "build": "yarn run clean && parcel build src/index.html --dist-dir ./docs --public-url \"./\""
   },

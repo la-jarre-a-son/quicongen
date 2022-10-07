@@ -1,6 +1,20 @@
-export const getImageDimensions = (ox, oy, originW, originH, destW, destH) => {
+export const getImageDimensionsFit = (ox, oy, originW, originH, destW, destH) => {
   const w = originW >= originH ? destW : (destW / originH) * originW;
   const h = originW >= originH ? (destH / originW) * originH : destH;
+  const x = ox - w / 2;
+  const y = oy - h / 2;
+
+  return {
+    w,
+    h,
+    x,
+    y,
+  };
+};
+
+export const getImageDimensionsFill = (ox, oy, originW, originH, destW, destH) => {
+  const w = originW >= originH ? (destW / originH) * originW : destW;
+  const h = originW >= originH ? destH : (destH / originW) * originH;
   const x = ox - w / 2;
   const y = oy - h / 2;
 

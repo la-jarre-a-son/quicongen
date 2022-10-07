@@ -25,6 +25,14 @@ function PresetProvider({ children }) {
     setPreset((state) => ({ ...state, background }));
   }, []);
 
+  const setBackgroundImage = useCallback((name, data) => {
+    if (name === null) {
+      setPreset((state) => ({ ...state, backgroundImage: null }));
+    } else {
+      setPreset((state) => ({ ...state, backgroundImage: { name, data } }));
+    }
+  }, []);
+
   const setForeground = useCallback((foreground) => {
     setPreset((state) => ({ ...state, foreground }));
   }, []);
@@ -74,6 +82,7 @@ function PresetProvider({ children }) {
     () => ({
       preset,
       setBackground,
+      setBackgroundImage,
       setForeground,
       setSize,
       setPadding,

@@ -1,6 +1,12 @@
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
 
-import { fillRectRound, fillRectRoundQuadratic, getImageDimensions, setCanvasFillStyle } from '../utils/rendering';
+import {
+  fillRectRound,
+  fillRectRoundQuadratic,
+  getImageDimensionsFill,
+  getImageDimensionsFit,
+  setCanvasFillStyle,
+} from '../utils/rendering';
 import useImage from '../utils/useImage';
 
 import { useIcon } from './IconContext';
@@ -17,8 +23,10 @@ function RenderingProvider({ children }) {
   const { icon } = useIcon();
   const { currentPreset } = usePresetList();
   const { preset } = usePreset();
-  const { size, padding, rotation, radius, radiusType, background, foreground } = preset;
+  const { size, padding, rotation, radius, radiusType, background, backgroundImage, foreground } = preset;
   const image = useImage(icon && icon.data);
+
+  const bgImage = useImage(backgroundImage && backgroundImage.data);
 
   const [dataUrl, setDataUrl] = useState(null);
   const [filename, setFilename] = useState('QuIconGen.png');
@@ -30,6 +38,30 @@ function RenderingProvider({ children }) {
     const ctx = cBackgroundRef.current.getContext('2d');
 
     ctx.clearRect(0, 0, size, size);
+
+    ctx.globalCompositeOperation = 'source-over';
+
+    if (bgImage) {
+      const { x, y, w, h } = getImageDimensionsFill(size / 2, size / 2, bgImage.width, bgImage.height, size, size);
+
+      if (background.type === 'none') {
+        setCanvasFillStyle(ctx, { type: 'color', color: '#000000' }, size);
+        if (radiusType === 'arc') {
+          fillRectRound(ctx, 0, 0, size, size, (size / 2) * radius);
+        }
+        if (radiusType === 'quadratic') {
+          fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
+        }
+
+        ctx.globalCompositeOperation = 'source-in';
+      } else {
+        ctx.globalCompositeOperation = 'copy';
+      }
+
+      ctx.drawImage(bgImage, x, y, w, h);
+
+      ctx.globalCompositeOperation = 'source-in';
+    }
 
     if (background.type !== 'none') {
       setCanvasFillStyle(ctx, background, size);
@@ -57,7 +89,7 @@ function RenderingProvider({ children }) {
     const ctx = cForegroundRef.current.getContext('2d');
 
     if (image) {
-      const { x, y, w, h } = getImageDimensions(size / 2, size / 2, image.width, image.height, iconSize, iconSize);
+      const { x, y, w, h } = getImageDimensionsFit(size / 2, size / 2, image.width, image.height, iconSize, iconSize);
 
       ctx.globalCompositeOperation = 'copy';
       ctx.drawImage(image, x, y, w, h);
@@ -88,7 +120,7 @@ function RenderingProvider({ children }) {
 
       setDataUrl(cBackgroundRef.current.toDataURL());
     }
-  }, [preset, image]);
+  }, [preset, image, bgImage]);
 
   useEffect(() => {
     setFilename(getFileName(currentPreset, icon && icon.name));

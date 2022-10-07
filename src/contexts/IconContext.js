@@ -22,7 +22,11 @@ function IconProvider({ children }) {
   }, [icon]);
 
   const setIcon = useCallback((name, data) => {
-    _setIcon({ name, data });
+    if (name === null) {
+      _setIcon(null);
+    } else {
+      _setIcon({ name, data });
+    }
   }, []);
 
   const value = useMemo(

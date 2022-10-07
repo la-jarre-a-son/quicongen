@@ -6,6 +6,7 @@ import { usePalette, canAddItem, canRemoveItem } from '../../contexts/PaletteCon
 import { Menu, MenuSection } from '../Menu';
 import PaletteForm from '../PaletteForm';
 import PaletteList from '../PaletteList';
+import FilePicker from '../FilePicker';
 import Button from '../Button';
 import { useRendering } from '../../contexts/RenderingContext';
 import GeneralForm from '../GeneralForm';
@@ -13,8 +14,8 @@ import GeneralForm from '../GeneralForm';
 function ConfigMenu({ className }) {
   const { dataUrl } = useRendering();
   const { items, removeItem, addItem } = usePalette();
-  const { preset, setBackground, setForeground, save, add } = usePreset();
-  const { background, foreground } = preset;
+  const { preset, setBackground, setBackgroundImage, setForeground, save, add } = usePreset();
+  const { background, backgroundImage, foreground } = preset;
 
   const handleSavePreset = () => {
     save(dataUrl);
@@ -46,6 +47,7 @@ function ConfigMenu({ className }) {
       <MenuSection title="General">
         <GeneralForm />
       </MenuSection>
+
       <MenuSection title="Background">
         <PaletteList items={items} value={background} onSelect={setBackground} />
         <PaletteForm
@@ -56,6 +58,10 @@ function ConfigMenu({ className }) {
           canAdd={canAddItem(items, background)}
           canRemove={canRemoveItem(items, background)}
         />
+      </MenuSection>
+
+      <MenuSection title="Background Image">
+        <FilePicker value={backgroundImage} onChange={setBackgroundImage} removeable />
       </MenuSection>
 
       <MenuSection title="Foreground">

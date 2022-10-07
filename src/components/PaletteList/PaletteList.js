@@ -32,7 +32,9 @@ function PaletteList({ onSelect, items, value = {} }) {
             onClick={() => onSelect(item)}
             style={getItemStyle(item)}
             aria-label={`Palette item ${item.id}`}
-          />
+          >
+            {item.type === 'none' && 'IMAGE'}
+          </button>
         </li>
       ))}
     </ul>
