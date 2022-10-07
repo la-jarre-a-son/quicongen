@@ -10,12 +10,14 @@ import FilePicker from '../FilePicker';
 import Button from '../Button';
 import { useRendering } from '../../contexts/RenderingContext';
 import GeneralForm from '../GeneralForm';
+import ShadowForm from '../ShadowForm';
 
 function ConfigMenu({ className }) {
   const { dataUrl } = useRendering();
   const { items, removeItem, addItem } = usePalette();
-  const { unsaved, currentPreset, preset, setBackground, setBackgroundImage, setForeground, save } = usePreset();
-  const { background, backgroundImage, foreground } = preset;
+  const { unsaved, currentPreset, preset, setBackground, setBackgroundImage, setForeground, setShadow, save } =
+    usePreset();
+  const { background, backgroundImage, foreground, shadow } = preset;
 
   const handleSavePreset = () => {
     const name = prompt('Preset Name ?', currentPreset); // eslint-disable-line
@@ -35,9 +37,6 @@ function ConfigMenu({ className }) {
         </Button>
       }
     >
-      <Button className="ConfigMenu-button" intent="success" onClick={handleSavePreset} disabled={!unsaved}>
-        Save Preset
-      </Button>
       <MenuSection title="General">
         <GeneralForm />
       </MenuSection>
@@ -68,6 +67,10 @@ function ConfigMenu({ className }) {
           canAdd={canAddItem(items, foreground)}
           canRemove={canRemoveItem(items, foreground)}
         />
+      </MenuSection>
+
+      <MenuSection title="Icon Shadow">
+        <ShadowForm shadow={shadow} onChange={setShadow} />
       </MenuSection>
     </Menu>
   );

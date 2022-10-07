@@ -1,4 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
+import { polarToCartesian } from '../utils/angle';
+import { colorHexToRGBA } from '../utils/color';
 
 import {
   fillRectRound,
@@ -23,7 +25,7 @@ function RenderingProvider({ children }) {
   const { icon } = useIcon();
   const { currentPreset } = usePresetList();
   const { preset } = usePreset();
-  const { size, padding, rotation, radius, radiusType, background, backgroundImage, foreground } = preset;
+  const { size, padding, rotation, radius, radiusType, background, backgroundImage, foreground, shadow } = preset;
   const image = useImage(icon && icon.data);
 
   const bgImage = useImage(backgroundImage && backgroundImage.data);
@@ -72,6 +74,13 @@ function RenderingProvider({ children }) {
         fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
       }
     }
+
+    const [shadowX, shadowY] = polarToCartesian(shadow.angle, shadow.distance * size);
+
+    ctx.shadowOffsetX = shadowX;
+    ctx.shadowOffsetY = shadowY;
+    ctx.shadowColor = colorHexToRGBA(shadow.color, shadow.opacity);
+    ctx.shadowBlur = shadow.blur * size;
 
     ctx.globalCompositeOperation = 'source-over';
 

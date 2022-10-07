@@ -1,0 +1,86 @@
+.ShadowForm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 4px;
+}
+
+.ShadowForm-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ShadowForm-fieldLabel {
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background-color: #111;
+}
+
+/* ShadowForm Slider */
+
+.ShadowForm-slider {
+  width: 100%;
+  height: 48px;
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  flex-grow: 1;
+}
+
+.ShadowForm-sliderInput {
+  color: #0064ff;
+  width: 100%;
+}
+
+.ShadowForm-type,
+.ShadowForm-color,
+.ShadowForm-linear,
+.ShadowForm-radial {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.ShadowForm-buttonGroup {
+  margin: 4px;
+  display: flex;
+}
+
+.ShadowForm-buttonGroup > .Button {
+  border-radius: 0;
+  flex-grow: 1;
+}
+
+.ShadowForm-buttonGroup > .Button:first-child {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.ShadowForm-buttonGroup > .Button:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.ShadowForm-picker {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 4px;
+  color: transparent;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
+}

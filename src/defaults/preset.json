@@ -14,5 +14,12 @@
     "rotation": 0,
     "radius": 0,
     "radiusType": "arc",
-    "backgroundImage": null
+    "backgroundImage": null,
+    "shadow": {
+        "color": "#000000",
+        "opacity": 0,
+        "blur": 0,
+        "distance": 0,
+        "angle": 0
+    }
 }

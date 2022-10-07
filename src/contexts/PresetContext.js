@@ -63,6 +63,10 @@ function PresetProvider({ children }) {
     updatePreset((state) => ({ ...state, radius }));
   }, []);
 
+  const setShadow = useCallback((shadow) => {
+    updatePreset((state) => ({ ...state, shadow }));
+  }, []);
+
   const save = useCallback(
     (name, preview) => {
       savePreset(name, preview);
@@ -91,6 +95,7 @@ function PresetProvider({ children }) {
       setRotation,
       setRadiusType,
       setRadius,
+      setShadow,
       save,
     }),
     [currentPreset, unsaved, preset, setBackground]

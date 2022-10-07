@@ -1,3 +1,5 @@
+import { degToRad } from './angle';
+
 export const getImageDimensionsFit = (ox, oy, originW, originH, destW, destH) => {
   const w = originW >= originH ? destW : (destW / originH) * originW;
   const h = originW >= originH ? (destH / originW) * originH : destH;
@@ -25,8 +27,6 @@ export const getImageDimensionsFill = (ox, oy, originW, originH, destW, destH) =
     y,
   };
 };
-
-export const degToRad = (deg) => ((deg + 90) / 180) * Math.PI;
 
 const inSquareLength = (t) => Math.max(Math.abs(Math.cos(t)), Math.abs(Math.sin(t)));
 
