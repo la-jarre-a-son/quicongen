@@ -1,7 +1,7 @@
 {
   "name": "quicongen",
   "title": "QuIconGen",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Quick Icon Generator for Web or Stream Deck",
   "scripts": {
     "start": "parcel src/index.html --open",

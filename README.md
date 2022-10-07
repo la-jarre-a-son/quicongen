@@ -23,10 +23,15 @@ npm build
 
 ## Features
 
-- Pick or Drag and Drop image (transparent PNG or SVG)
+- Pick or Drag and Drop image (preferably transparent PNG or SVG)
 - Choose icon size, padding & rotation
-- Choose icon foreground color / gradient (or transparent to disable overlay)
-- Choose background color / gradient (or transparent)
+- Add radius to icon (arc/round or quadratic)
+- Pick or Drag and Drop a background image (opaque or transparent images)
+- Choose background color / gradient overlay (or transparent)
+- Choose background overlay opacity
+- Choose icon foreground color / gradient (or transparent to keep original image)
+- Choose foreground opacity
+- Add shadow to foreground icon (color, opacity, blur, distance, angle)
 - Save color / gradient to palette
 - Save presets
 - Click on icon / download icon button
