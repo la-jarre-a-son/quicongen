@@ -16,6 +16,7 @@
 
 .PresetList-item.is-active {
   border-color: #0064ff;
+  pointer-events: none;
 }
 
 .PresetList-itemButton {

@@ -160,8 +160,9 @@ function RenderingProvider({ children }) {
     () => ({
       dataUrl,
       filename,
+      size,
     }),
-    [dataUrl, filename]
+    [dataUrl, filename, size]
   );
 
   return <RenderingContext.Provider value={value}>{children}</RenderingContext.Provider>;
