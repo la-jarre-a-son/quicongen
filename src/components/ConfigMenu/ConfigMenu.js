@@ -13,7 +13,7 @@ import GeneralForm from '../GeneralForm';
 function ConfigMenu({ className }) {
   const { dataUrl } = useRendering();
   const { items, removeItem, addItem } = usePalette();
-  const { preset, setPadding, setSize, setRotation, setBackground, setForeground, save, add } = usePreset();
+  const { preset, setBackground, setForeground, save, add } = usePreset();
   const { background, foreground } = preset;
 
   const handleSavePreset = () => {
@@ -44,14 +44,7 @@ function ConfigMenu({ className }) {
       }
     >
       <MenuSection title="General">
-        <GeneralForm
-          size={preset.size}
-          padding={preset.padding}
-          rotation={preset.rotation}
-          onChangeSize={setSize}
-          onChangePadding={setPadding}
-          onChangeRotation={setRotation}
-        />
+        <GeneralForm />
       </MenuSection>
       <MenuSection title="Background">
         <PaletteList items={items} value={background} onSelect={setBackground} />

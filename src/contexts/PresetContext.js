@@ -41,6 +41,14 @@ function PresetProvider({ children }) {
     setPreset((state) => ({ ...state, rotation }));
   }, []);
 
+  const setRadiusType = useCallback((radiusType) => {
+    setPreset((state) => ({ ...state, radiusType }));
+  }, []);
+
+  const setRadius = useCallback((radius) => {
+    setPreset((state) => ({ ...state, radius }));
+  }, []);
+
   const save = useCallback(
     (preview) => {
       updatePreset(currentPreset, preview);
@@ -70,6 +78,8 @@ function PresetProvider({ children }) {
       setSize,
       setPadding,
       setRotation,
+      setRadiusType,
+      setRadius,
       save,
       add,
     }),

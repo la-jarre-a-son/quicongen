@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
 
-import { getImageDimensions, setCanvasFillStyle } from '../utils/rendering';
+import { fillRectRound, fillRectRoundQuadratic, getImageDimensions, setCanvasFillStyle } from '../utils/rendering';
 import useImage from '../utils/useImage';
 
 import { useIcon } from './IconContext';
@@ -17,7 +17,7 @@ function RenderingProvider({ children }) {
   const { icon } = useIcon();
   const { currentPreset } = usePresetList();
   const { preset } = usePreset();
-  const { size, padding, rotation, background, foreground } = preset;
+  const { size, padding, rotation, radius, radiusType, background, foreground } = preset;
   const image = useImage(icon && icon.data);
 
   const [dataUrl, setDataUrl] = useState(null);
@@ -33,7 +33,12 @@ function RenderingProvider({ children }) {
 
     if (background.type !== 'none') {
       setCanvasFillStyle(ctx, background, size);
-      ctx.fillRect(0, 0, size, size);
+      if (radiusType === 'arc') {
+        fillRectRound(ctx, 0, 0, size, size, (size / 2) * radius);
+      }
+      if (radiusType === 'quadratic') {
+        fillRectRoundQuadratic(ctx, 0, 0, size, size, (size / 2) * radius);
+      }
     }
 
     ctx.globalCompositeOperation = 'source-over';

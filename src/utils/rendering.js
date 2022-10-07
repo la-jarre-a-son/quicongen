@@ -62,3 +62,68 @@ export const setCanvasFillStyle = (ctx, config, size) => {
     ctx.fillStyle = gradient;
   }
 };
+
+/**
+ * Draws a rounded rectangle quadratic curves
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} x1 The top left x coordinate
+ * @param {Number} y1 The top left y coordinate
+ * @param {Number} x2 The bottom right x coordinate
+ * @param {Number} y2 The bottom right y coordinate
+ * @param {Number} [radius = 0] The corner radius
+ */
+export const fillRectRoundQuadratic = (ctx, x1, y1, x2, y2, radius = 0) => {
+  let r = radius;
+  if (x2 - x1 - 2 * r < 0) {
+    r = (x2 - x1) / 2;
+  } // ensure that the radius isn't too large for x
+  if (y2 - y1 - 2 * r < 0) {
+    r = (y2 - y1) / 2;
+  } // ensure that the radius isn't too large for y
+  ctx.beginPath();
+  ctx.moveTo(x1 + r, y1);
+  ctx.lineTo(x2 - r, y1);
+  ctx.quadraticCurveTo(x2, y1, x2, y1 + r);
+  ctx.lineTo(x2, y2 - r);
+  ctx.quadraticCurveTo(x2, y2, x2 - r, y2);
+  ctx.lineTo(x1 + r, y2);
+  ctx.quadraticCurveTo(x1, y2, x1, y2 - r);
+  ctx.lineTo(x1, y1 + r);
+  ctx.quadraticCurveTo(x1, y1, x1 + r, y1);
+  ctx.closePath();
+  ctx.fill();
+};
+
+/**
+ * Draws a rounded rectangle arcs
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} x1 The top left x coordinate
+ * @param {Number} y1 The top left y coordinate
+ * @param {Number} x2 The bottom right x coordinate
+ * @param {Number} y2 The bottom right y coordinate
+ * @param {Number} [radius = 0] The corner radius
+ */
+export const fillRectRound = (ctx, x1, y1, x2, y2, radius = 0) => {
+  const r2d = Math.PI / 180;
+  let r = radius;
+  if (x2 - x1 - 2 * r < 0) {
+    r = (x2 - x1) / 2;
+  } // ensure that the radius isn't too large for x
+  if (y2 - y1 - 2 * r < 0) {
+    r = (y2 - y1) / 2;
+  } // ensure that the radius isn't too large for y
+  ctx.beginPath();
+  ctx.moveTo(x1 + r, y1);
+  ctx.lineTo(x2 - r, y1);
+  ctx.arc(x2 - r, y1 + r, r, r2d * 270, r2d * 360, false);
+  ctx.lineTo(x2, y2 - r);
+  ctx.arc(x2 - r, y2 - r, r, r2d * 0, r2d * 90, false);
+  ctx.lineTo(x1 + r, y2);
+  ctx.arc(x1 + r, y2 - r, r, r2d * 90, r2d * 180, false);
+  ctx.lineTo(x1, y1 + r);
+  ctx.arc(x1 + r, y1 + r, r, r2d * 180, r2d * 270, false);
+  ctx.closePath();
+  ctx.fill();
+};

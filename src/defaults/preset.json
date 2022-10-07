@@ -1,1 +1,21 @@
-{"background":{"type":"linear","start":"#002d70","stop":"#0066ff","angle":0,"id":"linear:0:#002d70:#0066ff"},"foreground":{"type":"none"},"size":144,"padding":0.25,"rotation":0,"icon":{"name":null,"data":null}}
+{
+    "background": {
+        "type": "linear",
+        "start": "#002d70",
+        "stop": "#0066ff",
+        "angle": 0,
+        "id": "linear:0:#002d70:#0066ff"
+    },
+    "foreground": {
+        "type": "none"
+    },
+    "size": 144,
+    "padding": 0.25,
+    "rotation": 0,
+    "radius": 0,
+    "radiusType": "arc",
+    "icon": {
+        "name": null,
+        "data": null
+    }
+}

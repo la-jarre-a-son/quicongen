@@ -1,24 +1,39 @@
 import React from 'react';
+import { usePreset } from '../../contexts/PresetContext';
+
+import Button from '../Button';
+import GeneralFormField from './GeneralFormField';
 
 import './GeneralForm.css';
 
-function GeneralForm({ size, padding, rotation, onChangeSize, onChangePadding, onChangeRotation }) {
+function GeneralForm() {
+  const { preset, setPadding, setSize, setRotation, setRadiusType, setRadius } = usePreset();
+
+  const { size, padding, rotation, radius, radiusType } = preset;
+
   const handleChangeSize = (event) => {
-    onChangeSize(Math.round(Number(event.target.value || 0)));
+    setSize(Math.round(Number(event.target.value || 0)));
   };
 
   const handleChangePadding = (event) => {
-    onChangePadding(Math.round(Number(event.target.value || 0)) / 100);
+    setPadding(Math.round(Number(event.target.value || 0)) / 100);
   };
 
   const handleChangeRotation = (event) => {
-    onChangeRotation(Number(event.target.value || 0));
+    setRotation(Number(event.target.value || 0));
+  };
+
+  const handleChangeRadiusType = (type) => () => {
+    setRadiusType(type);
+  };
+
+  const handleChangeRadius = (event) => {
+    setRadius(Math.round(Number(event.target.value || 0)) / 100);
   };
 
   return (
     <div className="GeneralForm">
-      <div className="GeneralForm-field">
-        <div className="GeneralForm-fieldLabel">Size</div>
+      <GeneralFormField title="Size">
         <div className="GeneralForm-slider">
           <div className="GeneralForm-sliderLabel">{`${size}px`}</div>
           <input
@@ -31,9 +46,8 @@ function GeneralForm({ size, padding, rotation, onChangeSize, onChangePadding, o
             onChange={handleChangeSize}
           />
         </div>
-      </div>
-      <div className="GeneralForm-field">
-        <div className="GeneralForm-fieldLabel">Padding</div>
+      </GeneralFormField>
+      <GeneralFormField title="Padding">
         <div className="GeneralForm-slider">
           <div className="GeneralForm-sliderLabel">{`${Math.round(padding * 100)}%`}</div>
           <input
@@ -46,9 +60,35 @@ function GeneralForm({ size, padding, rotation, onChangeSize, onChangePadding, o
             onChange={handleChangePadding}
           />
         </div>
-      </div>
-      <div className="GeneralForm-field">
-        <div className="GeneralForm-fieldLabel">Rotate</div>
+      </GeneralFormField>
+      <GeneralFormField title="Radius Type">
+        <div className="GeneralForm-buttonGroup">
+          <Button intent={radiusType === 'arc' ? 'primary' : 'neutral'} onClick={handleChangeRadiusType('arc')}>
+            Arc
+          </Button>
+          <Button
+            intent={radiusType === 'quadratic' ? 'primary' : 'neutral'}
+            onClick={handleChangeRadiusType('quadratic')}
+          >
+            Quadratic
+          </Button>
+        </div>
+      </GeneralFormField>
+      <GeneralFormField title="Radius">
+        <div className="GeneralForm-slider">
+          <div className="GeneralForm-sliderLabel">{`${Math.round(radius * 100)}%`}</div>
+          <input
+            className="GeneralForm-sliderInput"
+            type="range"
+            min={0}
+            max={100}
+            step={5}
+            value={radius * 100}
+            onChange={handleChangeRadius}
+          />
+        </div>
+      </GeneralFormField>
+      <GeneralFormField title="Icon Rotation">
         <div className="GeneralForm-slider">
           <div className="GeneralForm-sliderLabel">{`${rotation}°`}</div>
           <input
@@ -61,7 +101,7 @@ function GeneralForm({ size, padding, rotation, onChangeSize, onChangePadding, o
             onChange={handleChangeRotation}
           />
         </div>
-      </div>
+      </GeneralFormField>
     </div>
   );
 }

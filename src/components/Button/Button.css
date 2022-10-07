@@ -1,7 +1,6 @@
 .Button {
   cursor: pointer;
   appearance: none;
-  background: #0064ff;
   border-radius: 5px;
   border: 0;
   color: #fff;
@@ -10,7 +9,13 @@
   font-weight: bold;
 }
 
-.Button:hover {
+.Button,
+.Button--primary {
+  background: #0064ff;
+}
+
+.Button:hover,
+.Button--primary:hover {
   background: #408cff;
   color: #fff;
 }
@@ -30,6 +35,15 @@
 
 .Button--danger:hover {
   background: #ff7642;
+  color: #fff;
+}
+
+.Button--neutral {
+  background: #555555;
+}
+
+.Button--neutral:hover {
+  background: #777777;
   color: #fff;
 }
 
